@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#0070c0">
+  <title>Rakshak</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="icon-192.png">
+</head>
+<body>
+  <header>
+    <h1>🛡️ Rakshak</h1>
+    <span id="srv">Server: checking…</span>
+    <span id="pending">Pending: 0</span>
+    <button id="net">● ONLINE</button>
+  </header>
+
+  <nav>
+    <button data-tab="reg" class="active">Register</button>
+    <button data-tab="vol">Volunteer</button>
+    <button data-tab="dash">🚨 Emergency</button>
+  </nav>
+
+  <section id="reg" class="tab active">
+    <h2>Register a person</h2>
+    <label>Photo (Optional)</label>
+    <input id="photo" type="file" accept="image/*" capture="environment">
+    <div id="photoPreview" style="margin-top: 5px;"></div>
+
+    <label>Name</label>
+    <input id="name" placeholder="e.g. Aarav Sharma">
+
+    <label>Age</label>
+    <input id="age" type="number">
+
+    <label>Family phone</label>
+    <input id="phone" type="tel" placeholder="98XXXXXXXX">
+
+    <label>Description (clothes, marks)</label>
+    <input id="desc" placeholder="red kurta, glasses">
+
+    <button id="saveBtn">Register</button>
+
+    <div id="wristband" style="display:none">
+      <h3>Wristband</h3>
+      <div id="wbInfo"></div>
+      <div id="qr"></div>
+    </div>
+
+    <h3>Registered people</h3>
+    <div id="list"></div>
+  </section>
+
+  <section id="vol" class="tab">
+    <h2>Report missing</h2>
+
+    <label>Registered person</label>
+    <select id="missingPerson"></select>
+
+    <label>Last seen place</label>
+    <select id="place">
+      <option>Ram Ghat</option>
+      <option>Datta Akhara Ghat</option>
+      <option>Mahakal Temple</option>
+      <option>Ujjain Railway Station</option>
+    </select>
+
+    <button id="missingBtn">Report missing</button>
+
+    <h3 style="margin-top:24px;">🔎  missing 
+      <button id="pullMissing" type="button" style="margin-left:8px; padding:4px 10px; font-size:12px; cursor:pointer;">🔄 Naye reports lao</button>
+    </h3>
+    <p style="font-size:13px; color:#555; margin:4px 0;">
+    <div id="missingList"></div>
+
+    <h2>Found a person</h2>
+
+    <label>Wristband QR (agar hai)</label>
+    <div style="display:flex; gap:8px;">
+      <button type="button" id="scanBtn" style="padding:8px 12px; cursor:pointer;">📷 QR scan</button>
+      <button type="button" id="scanStop" style="padding:8px 12px; cursor:pointer;">Stop</button>
+    </div>
+    <video id="scanVid" playsinline muted style="display:none; width:100%; max-height:220px; background:#000; border-radius:8px; margin-top:6px;"></video>
+    <div style="display:flex; gap:8px; margin-top:6px;">
+      <input id="qrText" placeholder="ya QR ka text paste karo (RK|RK-1234|Aarav|6|98...)">
+      <button type="button" id="qrRead" style="padding:8px 12px; cursor:pointer;">Padho</button>
+    </div>
+
+    <label>Name (if known)</label>
+    <input id="fname">
+
+    <label>Approx age</label>
+    <input id="fage" type="number">
+
+    <label>Description (bol ke bharo)</label>
+    <div class="voice-row">
+      <input id="fdesc" placeholder="लाल कुर्ता, चश्मा">
+      <button class="mic" data-target="fdesc">🎤</button>
+    </div>
+
+    <label>Found at</label>
+    <select id="fplace">
+      <option>Ram Ghat</option>
+      <option>Datta Akhara Ghat</option>
+      <option>Mahakal Temple</option>
+      <option>Ujjain Railway Station</option>
+    </select>
+
+    <button id="foundBtn">Record found</button>
+
+    <h3>Matches</h3>
+    <div id="matches"></div>
+
+    <h3>Cases</h3>
+    <div id="cases"></div>
+
+    <h3>SMS log (simulated)</h3>
+    <div id="smsLog"></div>
+  </section>
+
+  <section id="dash" class="tab">
+    <h2>🚨 Emergency</h2>
+
+
+    <form id="healthForm" style="display:flex; flex-direction:column; gap:10px; max-width:420px; margin-top:12px;">
+      <label><strong>Patient Name / Tag ID:</strong></label>
+      <input type="text" id="patientName" placeholder="Enter Name or Scan QR" required style="padding:8px; border-radius:4px; border:1px solid #ccc;">
+
+      <label><strong>Emergency Type:</strong></label>
+      <select id="emergencyType" style="padding:8px; border-radius:4px; border:1px solid #ccc;">
+        <option value="Dehydration/Fainting">Dehydration / Fainting (Behoshi)</option>
+        <option value="Injury/Fall">Injury / Fall (Chot)</option>
+        <option value="Elderly Care">Elderly / Cardiac Distress</option>
+        <option value="General Medical">General Medical Assistance</option>
+      </select>
+
+      <label><strong>Location / Sector:</strong></label>
+      <div style="display:flex; gap:8px;">
+        <input type="text" id="healthLocation" placeholder="e.g. Ram Ghat Sector 4" required style="flex:1; padding:8px; border-radius:4px; border:1px solid #ccc;">
+        <button type="button" id="locBtn" style="padding:0 14px; background:#0070c0; color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:15px;">📍 GPS</button>
+      </div>
+      <div id="locInfo" style="font-size:13px;"></div>
+
+      <label><strong>Photo (optional):</strong></label>
+      <input type="file" id="emPhoto" accept="image/*" capture="environment">
+
+      <label><strong>Video (optional, max 30 MB):</strong></label>
+      <input type="file" id="emVideo" accept="video/*" capture="environment">
+      <div id="emMedia" style="font-size:13px;"></div>
+
+      <button type="submit" style="background-color:#ea580c; color:white; padding:10px; border:none; border-radius:5px; cursor:pointer; font-weight:bold; margin-top:6px;">
+        🚨 Submit Emergency Alert
+      </button>
+    </form>
+
+    <div id="healthStatus" style="margin-top:12px; font-weight:bold;"></div>
+
+    <h3 style="margin-top:22px;">Emergency alerts
+      <button id="pullBtn" type="button" style="margin-left:8px; padding:4px 10px; font-size:12px; cursor:pointer;">🔄 Server se alerts lao</button>
+    </h3>
+    <div id="medList"></div>
+
+    <div id="trackBox" style="display:none; margin-top:14px; border:1px solid #9db7d0; border-radius:10px; padding:12px; max-width:420px; background:#fff;">
+      <b id="trackTitle"></b>
+      <div id="trackInfo" style="margin:6px 0; font-size:14px;"></div>
+      <div id="trackMap" style="text-align:center;"></div>
+      <div id="trackLinks" style="font-size:13px; margin-top:6px;"></div>
+      <div style="margin-top:8px; display:flex; gap:8px; flex-wrap:wrap;">
+        <button id="simBtn" type="button" style="padding:7px 12px; cursor:pointer;">▶ Demo: team approaching</button>
+        <button id="stopBtn" type="button" style="padding:7px 12px; cursor:pointer;">■ Stop</button>
+      </div>
+      <div id="shareState" style="font-size:12px; margin-top:6px; color:#555;"></div>
+    </div>
+
+    <h3 style="margin-top:26px;">Crowd density by zone <small>(simulated data)</small></h3>
+    <div id="zones"></div>
+    <button id="surge" style="margin-top:10px; padding:8px 14px; background:#ed7d31; color:#fff; border:none; border-radius:6px; cursor:pointer;">Simulate surge at Ram Ghat</button>
+  </section>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
