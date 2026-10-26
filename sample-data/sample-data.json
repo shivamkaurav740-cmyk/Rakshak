@@ -1,0 +1,16 @@
+{
+  "note": "Fictional sample data for testing. Names and phone numbers are made up.",
+  "people": [
+    { "id": "RK-1001", "name": "Aarav Sharma", "age": 6, "phone": "9000000001", "desc": "red kurta, glasses" },
+    { "id": "RK-1002", "name": "Savitri Devi", "age": 72, "phone": "9000000002", "desc": "white saree, elderly" }
+  ],
+  "cases": [
+    { "id": "C1700000000001", "type": "missing", "personId": "RK-1001", "name": "Aarav Sharma", "age": 6,
+      "desc": "red kurta, glasses", "place": "Ram Ghat", "time": "10:15:00 AM", "status": "open" },
+    { "id": "C1700000000002", "type": "found", "name": "Unknown", "age": 6,
+      "desc": "laal kurta chashma ladka", "place": "Datta Akhara Ghat", "time": "10:40:00 AM", "status": "open" },
+    { "id": "C1700000000003", "type": "medical", "name": "Savitri Devi", "age": 0,
+      "desc": "Elderly Care", "place": "Ram Ghat Sector 4", "time": "11:05:00 AM", "status": "open",
+      "lat": 23.1765, "lng": 75.7885 }
+  ]
+}
